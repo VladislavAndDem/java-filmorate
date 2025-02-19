@@ -15,12 +15,16 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class User {
     private Integer id;
+
     @NonNull
     @Email(message = "Электронный адресс не соответствует формату")
     private String email;
+
     @NotBlank(message = "логин не может быть пустым и состоять из пробелов")
     private String login;
+
     private String name;
+
     @Past(message = "дата рождения не может быть в будущем")
     LocalDate birthday;
 }

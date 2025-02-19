@@ -11,6 +11,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -55,8 +56,8 @@ class UserControllerTest {
     public void testCreateUserWithNameNull() {
         user.setName(null);
         userController.create(user);
-        Collection<User> collection = userController.findAll();
-        assertEquals(collection.iterator().next().getName(), collection.iterator().next().getLogin());
+        List<User> users = userController.findAll();
+        assertEquals(users.getFirst().getName(), users.getFirst().getLogin());
     }
 
     @Test
@@ -74,9 +75,9 @@ class UserControllerTest {
 
         userController.updateUser(user);
 
-        Collection<User> users = userController.findAll();
+        List<User> users = userController.findAll();
         assertEquals(1, users.size());
-        assertEquals("new@mail.ru", users.iterator().next().getEmail());
+        assertEquals("new@mail.ru", users.getFirst().getEmail());
     }
 
     @Test
@@ -86,9 +87,9 @@ class UserControllerTest {
 
         userController.updateUser(user);
 
-        Collection<User> users = userController.findAll();
+        List<User> users = userController.findAll();
         assertEquals(1, users.size());
-        assertEquals("newLogin", users.iterator().next().getLogin());
+        assertEquals("newLogin", users.getFirst().getLogin());
     }
 
     @Test
@@ -98,9 +99,9 @@ class UserControllerTest {
 
         userController.updateUser(user);
 
-        Collection<User> users = userController.findAll();
+        List<User> users = userController.findAll();
         assertEquals(1, users.size());
-        assertEquals("notVlad", users.iterator().next().getName());
+        assertEquals("notVlad", users.getFirst().getName());
     }
 
     @Test
@@ -110,8 +111,8 @@ class UserControllerTest {
 
         userController.updateUser(user);
 
-        Collection<User> users = userController.findAll();
+        List<User> users = userController.findAll();
         assertEquals(1, users.size());
-        assertEquals(LocalDate.of(1999, Month.MAY, 5), users.iterator().next().getBirthday());
+        assertEquals(LocalDate.of(1999, Month.MAY, 5), users.getFirst().getBirthday());
     }
 }

@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -17,8 +18,8 @@ public class UserController {
     private final Map<Integer, User> users = new HashMap<>();
 
     @GetMapping
-    public Collection<User> findAll() {
-        return users.values();
+    public List<User> findAll() {
+        return new ArrayList<>(users.values());
     }
 
     @PostMapping
@@ -45,16 +46,6 @@ public class UserController {
         return true;
     }
 
-    // вспомогательный метод для генерации идентификатора нового пользователя
-    private int getNextId() {
-        int currentMaxId = users.keySet()
-                .stream()
-                .mapToInt(id -> id)
-                .max()
-                .orElse(0);
-        return ++currentMaxId;
-    }
-
     @PutMapping
     public User updateUser(@Valid @RequestBody User newUser) {
         if (newUser.getId() == null) {
@@ -65,10 +56,8 @@ public class UserController {
         try {
             if (validateUser(newUser)) {
                 // если пользователь найден и все условия соблюдены, обновляем его содержимое
-                oldUser.setEmail(newUser.getEmail());
-                oldUser.setLogin(newUser.getLogin());
-                oldUser.setName(newUser.getName());
-                oldUser.setBirthday(newUser.getBirthday());
+                UserMapper userMapper = new UserMapper();
+                userMapper.map(newUser, oldUser);
 
                 log.debug("Данные пользователя изменены");
                 return oldUser;
@@ -78,5 +67,15 @@ public class UserController {
         }
         log.error("Пользователь не найден");
         throw new ValidationException("пользователь с id = " + newUser.getId() + " не найден");
+    }
+
+    // вспомогательный метод для генерации идентификатора нового пользователя
+    private int getNextId() {
+        int currentMaxId = users.keySet()
+                .stream()
+                .mapToInt(id -> id)
+                .max()
+                .orElse(0);
+        return ++currentMaxId;
     }
 }

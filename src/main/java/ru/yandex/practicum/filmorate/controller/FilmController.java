@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.time.LocalDate;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -16,11 +16,10 @@ import java.util.Map;
 @Slf4j
 public class FilmController {
     private final Map<Integer, Film> films = new HashMap<>();
-    public static final LocalDate MOVIE_BIRTHDAY = LocalDate.of(1895, 12, 28);// 28 декабря 1895 года
 
     @GetMapping
-    public Collection<Film> findAll() {
-        return films.values();
+    public List<Film> findAll() {
+        return new ArrayList<>(films.values());
     }
 
     @PostMapping
@@ -31,16 +30,6 @@ public class FilmController {
         return film;
     }
 
-    // вспомогательный метод для генерации идентификатора нового фильма
-    private int getNextId() {
-        int currentMaxId = films.keySet()
-                .stream()
-                .mapToInt(id -> id)
-                .max()
-                .orElse(0);
-        return ++currentMaxId;
-    }
-
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film newFilm) {
         if (newFilm.getId() == null) {
@@ -49,17 +38,24 @@ public class FilmController {
         }
 
         if (films.containsKey(newFilm.getId())) {
+            FilmMapper filmMapper = new FilmMapper();
             Film oldFilm = films.get(newFilm.getId());
-
-            oldFilm.setName(newFilm.getName());
-            oldFilm.setDuration(newFilm.getDuration());
-            oldFilm.setReleaseDate(newFilm.getReleaseDate());
-            oldFilm.setDescription(newFilm.getDescription());
+            filmMapper.map(newFilm, oldFilm);
 
             log.debug("Данные фильма изменены");
             return oldFilm;
         }
         log.error("фильм не найден");
         throw new ValidationException("фильм с id = " + newFilm.getId() + " не найден");
+    }
+
+    // вспомогательный метод для генерации идентификатора нового фильма
+    private int getNextId() {
+        int currentMaxId = films.keySet()
+                .stream()
+                .mapToInt(id -> id)
+                .max()
+                .orElse(0);
+        return ++currentMaxId;
     }
 }

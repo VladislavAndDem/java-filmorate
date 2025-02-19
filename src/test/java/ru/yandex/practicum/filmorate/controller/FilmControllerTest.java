@@ -11,6 +11,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -81,9 +82,9 @@ public class FilmControllerTest {
 
         filmController.updateFilm(film);
 
-        Collection<Film> films = filmController.findAll();
+        List<Film> films = filmController.findAll();
         assertEquals(1, films.size());
-        assertEquals("Новый фильм", films.iterator().next().getName());
+        assertEquals("Новый фильм", films.getFirst().getName());
     }
 
     @Test
@@ -93,9 +94,9 @@ public class FilmControllerTest {
 
         filmController.updateFilm(film);
 
-        Collection<Film> films = filmController.findAll();
+        List<Film> films = filmController.findAll();
         assertEquals(1, films.size());
-        assertEquals("A".repeat(150), films.iterator().next().getDescription());
+        assertEquals("A".repeat(150), films.getFirst().getDescription());
     }
 
     @Test
@@ -105,9 +106,9 @@ public class FilmControllerTest {
 
         filmController.updateFilm(film);
 
-        Collection<Film> films = filmController.findAll();
+        List<Film> films = filmController.findAll();
         assertEquals(1, films.size());
-        assertEquals(LocalDate.of(1900, Month.MAY, 5), films.iterator().next().getReleaseDate());
+        assertEquals(LocalDate.of(1900, Month.MAY, 5), films.getFirst().getReleaseDate());
     }
 
     @Test
@@ -117,8 +118,8 @@ public class FilmControllerTest {
 
         filmController.updateFilm(film);
 
-        Collection<Film> films = filmController.findAll();
+        List<Film> films = filmController.findAll();
         assertEquals(1, films.size());
-        assertEquals(199, films.iterator().next().getDuration());
+        assertEquals(199, films.getFirst().getDuration());
     }
 }

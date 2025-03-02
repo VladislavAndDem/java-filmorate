@@ -13,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-@Slf4j
 public class UserController {
     public final UserStorage userStorage;
     public final UserService userService;

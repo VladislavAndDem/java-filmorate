@@ -3,7 +3,10 @@ package ru.yandex.practicum.filmorate.model;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -12,7 +15,6 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder // для игнорированияполя friends в конструкторе
 public class User {
     private Integer id;
 
@@ -28,6 +30,5 @@ public class User {
     @Past(message = "дата рождения не может быть в будущем")
     LocalDate birthday;
 
-    @Builder.Default // для игнорированияполя friends в конструкторе
     private Set<Integer> friends = new HashSet<>();
 }

@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.yandex.practicum.filmorate.annotation.ReleaseDateValid;
@@ -16,7 +15,6 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Film {
     private Integer id;
 
@@ -32,6 +30,5 @@ public class Film {
     @Positive(message = "Длительность фильма должна быть больше 0")
     Integer duration;
 
-    @Builder.Default//Для игнорирование likes в конструкторе
     private Set<Integer> likes = new HashSet<>();
 }

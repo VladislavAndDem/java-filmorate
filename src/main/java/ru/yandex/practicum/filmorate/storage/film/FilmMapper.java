@@ -3,11 +3,11 @@ package ru.yandex.practicum.filmorate.storage.film;
 import ru.yandex.practicum.filmorate.model.Film;
 
 public class FilmMapper {
-    public void map(Film first, Film second) {
+    public void map(Film source, Film other) {
 
-        second.setName(first.getName());
-        second.setDuration(first.getDuration());
-        second.setReleaseDate(first.getReleaseDate());
-        second.setDescription(first.getDescription());
+        other.setName(source.getName());
+        other.setDuration(source.getDuration());
+        other.setReleaseDate(source.getReleaseDate());
+        other.setDescription(source.getDescription());
     }
 }

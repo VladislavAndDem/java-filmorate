@@ -27,7 +27,7 @@ public class UserService {
         User userReceive = userStorage.getUserById(friendId);
         if (!userSend.getFriends().isEmpty() && !userReceive.getFriends().isEmpty()) {
             if (userSend.getFriends().contains(friendId)) {
-                log.error("Пользователь с id - {}, уже есть в вашем списке друзей", friendId    );
+                log.error("Пользователь с id - {}, уже есть в вашем списке друзей", friendId);
                 throw new DuplicatedDataException(String.format("Пользователь с id - %d, уже есть в вашем списке друзей", friendId));
             }
 

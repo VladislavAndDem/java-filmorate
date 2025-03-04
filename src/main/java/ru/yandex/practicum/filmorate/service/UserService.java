@@ -22,35 +22,32 @@ public class UserService {
         this.userStorage = userStorage;
     }
 
-    //PUT /users/{id}/friends/{friendId} - добавления друга по его id
-    public void addFriend(Integer id, Integer friendId) {
-        User userSend = userStorage.getUserById(id);
+    public void addFriend(Integer myId, Integer friendId) {
+        User userSend = userStorage.getUserById(myId);
         User userReceive = userStorage.getUserById(friendId);
         if (!userSend.getFriends().isEmpty() && !userReceive.getFriends().isEmpty()) {
             if (userSend.getFriends().contains(friendId)) {
-                log.error(String.format("Пользователь с id - %d, уже есть в вашем списке друзей", friendId));
+                log.error("Пользователь с id - {}, уже есть в вашем списке друзей", friendId    );
                 throw new DuplicatedDataException(String.format("Пользователь с id - %d, уже есть в вашем списке друзей", friendId));
             }
 
         }
-        log.info("Пользователь с id {} добавиль пользователя с id - {} в друзья", id, friendId);
+        log.info("Пользователь с id {} добавиль пользователя с id - {} в друзья", myId, friendId);
         userSend.getFriends().add(friendId);
-        userReceive.getFriends().add(id);
+        userReceive.getFriends().add(myId);
     }
 
-    //Для DELETE /users/{id}/friends/{friendId} - удалить друга по его id
-    public void deleteFriend(Integer id, Integer friendId) {
-        User userSend = userStorage.getUserById(id);
+    public void deleteFriend(Integer myId, Integer friendId) {
+        User userSend = userStorage.getUserById(myId);
         User userReceive = userStorage.getUserById(friendId);
 
-        if (userSend.getFriends().contains(friendId) && userReceive.getFriends().contains(id)) {
-            log.info("Пользователь с id {} удалил пользователя с id - {} из  друзья", id, friendId);
+        if (userSend.getFriends().contains(friendId) && userReceive.getFriends().contains(myId)) {
+            log.info("Пользователь с id {} удалил пользователя с id - {} из  друзья", myId, friendId);
             userSend.getFriends().remove(friendId);
-            userReceive.getFriends().remove(id);
+            userReceive.getFriends().remove(myId);
         }
     }
 
-    //GET /users/{id}/friends - возврашает список всех друзей пользователя по его id
     public List<User> findAllFriends(Integer id) {
         Set<Integer> friendsId = userStorage.getUserById(id).getFriends();
         ArrayList<User> userFriends = new ArrayList<>();
@@ -61,9 +58,8 @@ public class UserService {
         return userFriends;
     }
 
-    //GET /users/{id}/friends/common/{otherId} - возвращает список общих друзей с другим пользователем
-    public List<User> findCommonFriends(Integer id, Integer otherId) {
-        User thisUser = userStorage.getUserById(id);
+    public List<User> findCommonFriends(Integer myId, Integer otherId) {
+        User thisUser = userStorage.getUserById(myId);
         User otherUser = userStorage.getUserById(otherId);
 
         Set<Integer> commonFriendsId = new HashSet<>(thisUser.getFriends());
@@ -72,13 +68,12 @@ public class UserService {
         чтобы оно содержало только те элементы, которые также присутствуют в указанном наборе.*/
         List<User> commonFriends = new ArrayList<>();
         for (Integer friendId : commonFriendsId) {
-            //User friend = users.get(friendId);
             User friend = userStorage.getUserById(friendId);
             if (friend != null) {
                 commonFriends.add(friend);
             }
         }
-        log.info("Пользователь с id = {} получил список общих друзей с пользователем {}", id, otherId);
+        log.info("Пользователь с id = {} получил список общих друзей с пользователем {}", myId, otherId);
         return commonFriends;
     }
 }

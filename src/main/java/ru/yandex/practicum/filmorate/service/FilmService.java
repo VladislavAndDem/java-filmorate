@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.DuplicatedDataException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
@@ -25,22 +24,18 @@ public class FilmService {
         this.userStorage = userStorage;
     }
 
-    //PUT /films/{id}/like/{userId} - пользователь ставит лайк фильму.
-    public void likeMovie(Integer id, Integer userId) {
-        Film film = filmStorage.getFilmById(id);
+    public void likeMovie(Integer filmId, Integer userId) {
+        Film film = filmStorage.getFilmById(filmId);
         userStorage.getUserById(userId);
-        if (!film.getLikes().isEmpty()) {
 
-            if (film.getLikes().contains(userId)) {
-                log.error("Невозможно поставить лайк фильму дважды");
-                throw new DuplicatedDataException("Вы уже поставили лайк данному фильму");
-            }
+        if (film.getLikes().contains(userId)) {
+            log.debug("Невозможно поставить лайк фильму дважды");
+            return;
         }
-        log.info("Пользователь с id - {} поставиль лайк фильму с id - {}", userId, id);
+        log.info("Пользователь с id - {} поставил лайк фильму с id - {}", userId, filmId);
         film.getLikes().add(userId);
     }
 
-    //DELETE /films/{id}/like/{userId} - пользователь удаляет лайк.
     public void deleteLikeFilm(Integer id, Integer userId) {
         Film film = filmStorage.getFilmById(id);
         userStorage.getUserById(userId);
@@ -52,8 +47,6 @@ public class FilmService {
         film.getLikes().remove(userId);
     }
 
-    /*GET /films/popular?count={count} - возвращает список из первых count фильмов по количеству лайков. Если значени
-     параметра count не задано, верните первые 10.*/
     public List<Film> getPopularFilms(Integer count) {
         List<Film> films = filmStorage.findAll();
         films.sort((f1, f2) -> Integer.compare(f2.getLikes().size(), f1.getLikes().size()));

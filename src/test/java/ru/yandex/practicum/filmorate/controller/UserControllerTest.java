@@ -7,9 +7,11 @@ import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -17,16 +19,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserControllerTest {
     private Validator validator;
-    private UserController userController;
+    private InMemoryUserStorage userController;
     private User user;
 
     @BeforeEach
     public void setUp() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
-        userController = new UserController();
+        userController = new InMemoryUserStorage();
         user = new User(1, "Vlad@mail.ru", "login", "vladislav",
-                LocalDate.of(2000, Month.MAY, 10));
+                LocalDate.of(2000, Month.MAY, 10), new HashSet<>());
     }
 
     @Test

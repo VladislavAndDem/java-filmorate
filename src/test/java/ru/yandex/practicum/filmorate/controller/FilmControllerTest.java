@@ -7,9 +7,11 @@ import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,16 +21,16 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class FilmControllerTest {
 
     private Validator validator;
-    private FilmController filmController;
+    private InMemoryFilmStorage filmController;
     private Film film;
 
     @BeforeEach
     public void setUp() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
-        filmController = new FilmController();
+        filmController = new InMemoryFilmStorage();
         film = new Film(1, "Фильм", "Описание фильма", LocalDate.of(2025, Month.JANUARY,
-                1), 100);
+                1), 100, new HashSet<>());
     }
 
     @Test

@@ -31,4 +31,6 @@ public class User {
     LocalDate birthday;
 
     private Set<Integer> friends = new HashSet<>();
+    //костыльное поля для статуса добавления в друзья
+    private String status;
 }

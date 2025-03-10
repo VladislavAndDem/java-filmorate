@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import ru.yandex.practicum.filmorate.annotation.ReleaseDateValid;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,4 +32,8 @@ public class Film {
     Integer duration;
 
     private Set<Integer> likes = new HashSet<>();
+    //лист с жанрами фильма
+    private ArrayList<String> genre;
+    //рейтинг фильма
+    private String rating;
 }

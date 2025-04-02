@@ -1,5 +1,8 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.Getter;
+
+@Getter
 public class ErrorResponse {
     String error;
 
@@ -10,11 +13,4 @@ public class ErrorResponse {
         this.description = description;
     }
 
-    public String getError() {
-        return error;
-    }
-
-    public String getDescription() {
-        return description;
-    }
 }

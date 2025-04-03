@@ -99,6 +99,7 @@ public class UserDbStorage implements UserStorage {
         if (jdbcTemplate.update(sqlQuery, userId) == 0) {
             throw new NotFoundException("Пользователь с ID=" + userId + " не найден!");
         }
+        log.info("Пользователь с id " + userId + " delete");
         return user;
     }
 }

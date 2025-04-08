@@ -12,4 +12,6 @@ public interface UserStorage {
     User updateUser(User newUser);
 
     User getUserById(Integer id);
+
+    User delete(Integer filmId);
 }
